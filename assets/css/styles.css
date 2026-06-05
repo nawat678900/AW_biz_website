@@ -1295,6 +1295,11 @@ body.mobile-menu-open {
   transform: translateY(0);
 }
 
+.aw-homepage .landing-map-panel {
+  opacity: 1;
+  transform: none;
+}
+
 @keyframes awHomeRise {
   from {
     opacity: 0;
