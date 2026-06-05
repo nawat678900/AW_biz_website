@@ -1,0 +1,16 @@
+RewriteEngine On
+
+RewriteRule ^contact\.html$ /contact/ [R=301,L]
+RewriteRule ^faq\.html$ /faq/ [R=301,L]
+RewriteRule ^privacy\.html$ /privacy-policy/ [R=301,L]
+RewriteRule ^services/visa\.html$ /visa-services/ [R=301,L]
+RewriteRule ^services/work-permit\.html$ /work-permit/ [R=301,L]
+RewriteRule ^services/business-accounting\.html$ /business-services/ [R=301,L]
+RewriteRule ^services/personal-support\.html$ /personal-services/ [R=301,L]
+RewriteRule ^th/contact\.html$ /th/contact/ [R=301,L]
+RewriteRule ^th/faq\.html$ /th/faq/ [R=301,L]
+RewriteRule ^th/privacy\.html$ /th/privacy-policy/ [R=301,L]
+RewriteRule ^th/services/visa\.html$ /th/visa-services/ [R=301,L]
+RewriteRule ^th/services/work-permit\.html$ /th/work-permit/ [R=301,L]
+RewriteRule ^th/services/business-accounting\.html$ /th/business-services/ [R=301,L]
+RewriteRule ^th/services/personal-support\.html$ /th/personal-services/ [R=301,L]
