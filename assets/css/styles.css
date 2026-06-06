@@ -1403,7 +1403,10 @@ body.mobile-menu-open {
   }
 
   .landing-map-layout {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: stretch;
   }
 
   .landing-map-copy {
@@ -1419,6 +1422,24 @@ body.mobile-menu-open {
 
   .landing-address-card {
     text-align: left;
+  }
+
+  .landing-map-panel {
+    width: 100%;
+    min-height: 360px;
+  }
+
+  .landing-photo-panel {
+    min-height: 320px;
+  }
+
+  .landing-office-photo {
+    min-height: 320px;
+  }
+
+  .landing-map-panel .google-map {
+    width: 100%;
+    min-height: 360px;
   }
 
   .aw-news-grid {
@@ -1812,17 +1833,26 @@ body.mobile-menu-open {
     gap: 12px;
   }
 
+  .aw-homepage .landing-photo-panel {
+    min-height: clamp(280px, 68vw, 380px);
+  }
+
+  .aw-homepage .landing-office-photo {
+    min-height: clamp(280px, 68vw, 380px);
+    height: clamp(280px, 68vw, 380px);
+  }
+
   .aw-homepage .landing-map-panel,
   .aw-homepage .landing-map-panel .google-map {
-    min-height: 300px;
+    min-height: 360px;
   }
 
   .aw-homepage .landing-map-panel {
-    min-height: clamp(300px, 62vw, 360px);
+    min-height: clamp(360px, 78vw, 480px);
   }
 
   .aw-homepage .landing-map-panel .google-map {
-    height: clamp(300px, 62vw, 360px);
+    height: clamp(360px, 78vw, 480px);
   }
 
   .aw-homepage .contact-start,
@@ -2782,14 +2812,19 @@ details.faq-card[open] {
 
 .landing-map-layout {
   display: grid;
-  grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(28px, 5vw, 64px);
-  align-items: center;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "copy"
+    "photo"
+    "map";
+  gap: 24px;
+  align-items: stretch;
 }
 
 .landing-map-copy {
   display: grid;
   gap: 18px;
+  grid-area: copy;
 }
 
 .landing-map-copy h2 {
@@ -2827,7 +2862,26 @@ details.faq-card[open] {
   color: var(--ink);
 }
 
+.landing-photo-panel {
+  grid-area: photo;
+  min-height: 440px;
+  border: 1px solid rgba(198, 215, 223, 0.58);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface-strong);
+  box-shadow: var(--shadow);
+}
+
+.landing-office-photo {
+  width: 100%;
+  height: 100%;
+  min-height: 440px;
+  object-fit: cover;
+  display: block;
+}
+
 .landing-map-panel {
+  grid-area: map;
   min-height: 440px;
   border-radius: var(--radius);
 }
@@ -2835,8 +2889,34 @@ details.faq-card[open] {
 .landing-map-panel .google-map {
   width: 100%;
   height: 100%;
-  min-height: 440px;
+  min-height: 360px;
   display: block;
+}
+
+@media (min-width: 901px) {
+  .aw-homepage .landing-map-layout,
+  .landing-map-layout {
+    grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1.1fr);
+    grid-template-areas:
+      "copy photo"
+      "map map";
+    gap: clamp(28px, 5vw, 64px);
+    align-items: stretch;
+  }
+
+  .aw-homepage .landing-photo-panel,
+  .landing-photo-panel,
+  .aw-homepage .landing-map-panel,
+  .landing-map-panel {
+    min-height: 440px;
+  }
+
+  .aw-homepage .landing-office-photo,
+  .landing-office-photo,
+  .aw-homepage .landing-map-panel .google-map,
+  .landing-map-panel .google-map {
+    min-height: 440px;
+  }
 }
 
 .cta-panel {
