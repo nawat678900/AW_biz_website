@@ -1546,6 +1546,25 @@ a.aw-btn[href*="line.me"]:focus-visible {
     0 8px 18px rgba(15, 23, 42, 0.08);
 }
 
+.line-accent-button {
+  background: #06c755 !important;
+  color: #fff !important;
+  border-color: #06c755 !important;
+  box-shadow:
+    0 16px 36px rgba(6, 199, 85, 0.24),
+    0 4px 12px rgba(15, 23, 42, 0.05) !important;
+}
+
+.line-accent-button:hover,
+.line-accent-button:focus-visible {
+  background: #05b44d !important;
+  color: #fff !important;
+  border-color: #05b44d !important;
+  box-shadow:
+    0 22px 48px rgba(6, 199, 85, 0.3),
+    0 8px 18px rgba(15, 23, 42, 0.08) !important;
+}
+
 .aw-btn svg {
   width: 20px;
   height: 20px;
