@@ -3293,39 +3293,48 @@ details.faq-card[open] {
 
 .landing-map-copy {
   display: grid;
-  gap: 18px;
+  gap: 14px;
   grid-area: copy;
 }
 
 .landing-map-copy h2 {
   margin: 0;
-  max-width: 620px;
+  max-width: 560px;
   color: var(--ink);
-  font-size: clamp(2rem, 4vw, 3.1rem);
-  line-height: 1.12;
+  font-size: clamp(1.7rem, 3vw, 2.45rem);
+  line-height: 1.14;
 }
 
 .landing-map-copy > p {
   margin: 0;
-  max-width: 620px;
+  max-width: 580px;
   color: var(--ink-soft);
-  font-size: 1.04rem;
+  font-size: 0.98rem;
 }
 
 .landing-address-card {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 14px;
   border: 1px solid var(--line);
-  border-radius: 18px;
+  border-radius: 16px;
   background: var(--surface-strong);
-  padding: 18px;
+  padding: 16px 17px;
   box-shadow: var(--shadow);
+}
+
+.landing-address-card .icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  font-size: 0.78rem;
 }
 
 .landing-address-card p {
   margin: 0;
   color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.55;
 }
 
 .landing-address-card strong {
@@ -3334,9 +3343,9 @@ details.faq-card[open] {
 
 .landing-photo-panel {
   grid-area: photo;
-  min-height: 440px;
+  min-height: 400px;
   border: 1px solid rgba(198, 215, 223, 0.58);
-  border-radius: var(--radius);
+  border-radius: 22px;
   overflow: hidden;
   background: var(--surface-strong);
   box-shadow: var(--shadow);
@@ -3345,21 +3354,21 @@ details.faq-card[open] {
 .landing-office-photo {
   width: 100%;
   height: 100%;
-  min-height: 440px;
+  min-height: 400px;
   object-fit: cover;
   display: block;
 }
 
 .landing-map-panel {
   grid-area: map;
-  min-height: 440px;
-  border-radius: var(--radius);
+  min-height: 400px;
+  border-radius: 22px;
 }
 
 .landing-map-panel .google-map {
   width: 100%;
   height: 100%;
-  min-height: 360px;
+  min-height: 400px;
   display: block;
 }
 
@@ -3378,14 +3387,14 @@ details.faq-card[open] {
   .landing-photo-panel,
   .aw-homepage .landing-map-panel,
   .landing-map-panel {
-    min-height: 440px;
+    min-height: 400px;
   }
 
   .aw-homepage .landing-office-photo,
   .landing-office-photo,
   .aw-homepage .landing-map-panel .google-map,
   .landing-map-panel .google-map {
-    min-height: 440px;
+    min-height: 400px;
   }
 }
 
@@ -3399,9 +3408,19 @@ details.faq-card[open] {
   text-align: center;
 }
 
+.about-page .cta-panel {
+  display: grid;
+  justify-items: center;
+}
+
 .cta-panel p {
   margin-inline: auto;
   color: rgba(255, 255, 255, 0.9);
+}
+
+.about-page .cta-actions {
+  justify-content: center;
+  width: 100%;
 }
 
 .cookie-banner {
