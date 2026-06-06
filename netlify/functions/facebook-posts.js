@@ -1,6 +1,6 @@
 const PAGE_ID = process.env.FACEBOOK_PAGE_ID || "";
 const ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN || "";
-const GRAPH_VERSION = process.env.FACEBOOK_GRAPH_VERSION || "v20.0";
+const GRAPH_VERSION = process.env.FACEBOOK_GRAPH_VERSION || "";
 
 function normalizePost(post) {
   return {
@@ -31,6 +31,20 @@ exports.handler = async function handler() {
   }
 
   try {
+    if (!GRAPH_VERSION) {
+      return {
+        statusCode: 503,
+        headers: {
+          "content-type": "application/json; charset=utf-8",
+          "cache-control": "no-store"
+        },
+        body: JSON.stringify({
+          posts: [],
+          source: "missing-graph-version"
+        })
+      };
+    }
+
     const apiUrl = new URL(`https://graph.facebook.com/${GRAPH_VERSION}/${PAGE_ID}/posts`);
     apiUrl.searchParams.set("fields", "message,full_picture,permalink_url,created_time,story");
     apiUrl.searchParams.set("limit", "6");

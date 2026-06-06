@@ -21,7 +21,7 @@
 ```js
 const PAGE_ID = process.env.FACEBOOK_PAGE_ID;
 const ACCESS_TOKEN = process.env.FACEBOOK_PAGE_ACCESS_TOKEN;
-const GRAPH_VERSION = process.env.FACEBOOK_GRAPH_VERSION || "v20.0";
+const GRAPH_VERSION = process.env.FACEBOOK_GRAPH_VERSION;
 
 exports.handler = async function () {
   if (!PAGE_ID || !ACCESS_TOKEN) {
@@ -202,4 +202,3 @@ Expected: `Static site checks passed for 54 routes.`
 
 Run: `rg -n \"aw-hero|facebook-feed-section|news-info\" index.html th/index.html`
 Expected: the new Facebook section appears directly after the hero and before the article/news section.
-
