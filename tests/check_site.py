@@ -258,26 +258,37 @@ def check_contact_flow(pages: dict[str, str], failures: list[str]) -> None:
         "Contact page does not explain static form behavior",
         failures,
     )
-    map_embed = "https://www.google.com/maps?q=AW%20Business%20Services%20Pattaya&output=embed"
-    map_search = "https://www.google.com/maps/search/?api=1&query=399%2F19%20Pornprapanimit%20Rd%2C%20Muang%20Pattaya%2C%20Bang%20Lamung%20District%2C%20Chon%20Buri%2020150%2C%20Thailand"
+
+
+def check_facebook_feed(pages: dict[str, str], failures: list[str]) -> None:
+    script = read_text(ROOT / "assets/js/site.js")
+    for route, html in [
+        ("index.html", pages.get("index.html", "")),
+        ("th/index.html", read_text(ROOT / "th/index.html")),
+    ]:
+        assert_true(
+            'data-facebook-pagination' in html,
+            f"{route} is missing Facebook pagination markup",
+            failures,
+        )
+        assert_true(
+            'data-facebook-prev' in html and 'data-facebook-next' in html,
+            f"{route} is missing Facebook pagination controls",
+            failures,
+        )
+        assert_true(
+            'data-page-size="3"' in html,
+            f"{route} is missing the requested Facebook page size",
+            failures,
+        )
+        assert_true(
+            'data-carousel-duration="9"' in html,
+            f"{route} is missing the requested Facebook auto-scroll speed",
+            failures,
+        )
     assert_true(
-        '<iframe' in contact and map_embed in contact,
-        "Contact page is missing the requested embedded Google Map source",
-        failures,
-    )
-    assert_true(
-        f'href="{map_search}"' in contact,
-        "Contact page Google Maps link does not use the precise address pin",
-        failures,
-    )
-    assert_true(
-        "Pornprapanimit Rd" in contact,
-        "Contact page is missing the full office road address",
-        failures,
-    )
-    assert_true(
-        'title="AW Business Service Pattaya location"' in contact,
-        "Contact Google Map iframe needs an accessible title",
+        "data-facebook-card" in script and "setupFacebookPagination" in script,
+        "Site script does not initialize Facebook article-style cards",
         failures,
     )
 
@@ -606,6 +617,7 @@ def main() -> int:
     check_hero_layout(pages, failures)
     check_review_pagination(pages, failures)
     check_customer_photo_pagination(pages, failures)
+    check_facebook_feed(pages, failures)
     check_landing_page_revision(pages, failures)
     check_seo_sitemap_pages(pages, failures)
 

@@ -603,7 +603,7 @@
       viewport.className = "carousel-viewport";
       list.parentNode.insertBefore(viewport, list);
       viewport.appendChild(list);
-      list.classList.add("carousel-track", "is-interactive");
+      list.classList.add("carousel-track", "is-interactive", "is-infinite");
       list.innerHTML = "";
 
       [false, true].forEach(function (isClone) {
@@ -952,7 +952,7 @@
 
     function skeletonMarkup() {
       return (
-        '<article class="aw-news-card facebook-feed-card is-skeleton" aria-hidden="true">' +
+        '<article class="aw-news-card facebook-feed-card is-skeleton" data-facebook-card aria-hidden="true">' +
           '<div class="aw-news-media facebook-feed-media">' +
             '<div class="facebook-feed-skeleton facebook-feed-image"></div>' +
             '<div class="aw-news-tag-row facebook-feed-tag-row">' +
@@ -993,7 +993,7 @@
           var url = post && post.url ? String(post.url) : "https://www.facebook.com/awbizpattaya";
 
           return (
-            '<article class="aw-news-card facebook-feed-card">' +
+            '<article class="aw-news-card facebook-feed-card" data-facebook-card>' +
               '<div class="aw-news-media facebook-feed-media">' +
                 '<a class="facebook-feed-image' + (image ? "" : " is-empty") + '" href="' + escapeAttr(url) + '" target="_blank" rel="noopener">' +
                   (image
@@ -1015,6 +1015,8 @@
           );
         })
         .join("");
+
+      setupFacebookPagination();
     }
 
     list.setAttribute("aria-busy", "true");
@@ -1045,6 +1047,17 @@
         list.setAttribute("aria-busy", "false");
         list.innerHTML = emptyMarkup(copy.error);
       });
+  }
+
+  function setupFacebookPagination() {
+    setupPagination({
+      sectionSelector: "[data-facebook-pagination]",
+      listSelector: "[data-facebook-feed-list]",
+      cardSelector: "[data-facebook-card]",
+      previousSelector: "[data-facebook-prev]",
+      nextSelector: "[data-facebook-next]",
+      label: "Facebook update",
+    });
   }
 
   function escapeHtml(value) {

@@ -3032,6 +3032,20 @@ a.aw-btn[href*="line.me"]:focus-visible {
   width: max-content;
 }
 
+.carousel-track.is-infinite {
+  animation: carouselInfinite 1s linear infinite;
+}
+
+@keyframes carouselInfinite {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 .carousel-group {
   display: flex;
   flex: 0 0 auto;
