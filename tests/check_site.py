@@ -91,7 +91,7 @@ def assert_true(condition: bool, message: str, failures: list[str]) -> None:
 
 def check_font_system(pages: dict[str, str], failures: list[str]) -> None:
     styles = read_text(ROOT / "assets/css/styles.css")
-    font_href = "https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Mitr:wght@200;300;400;500;600;700&family=Prompt:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    font_href = "https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Prompt:wght@400;500;600;700;800;900&display=swap"
 
     for route, html in pages.items():
         assert_true(
@@ -258,11 +258,11 @@ def check_contact_flow(pages: dict[str, str], failures: list[str]) -> None:
         "Contact page does not explain static form behavior",
         failures,
     )
-    map_embed = "https://www.google.com/maps?q=399%2F19%20Pornprapanimit%20Rd%2C%20Muang%20Pattaya%2C%20Bang%20Lamung%20District%2C%20Chon%20Buri%2020150%2C%20Thailand&output=embed"
+    map_embed = "https://www.google.com/maps?q=AW%20Business%20Services%20Pattaya&output=embed"
     map_search = "https://www.google.com/maps/search/?api=1&query=399%2F19%20Pornprapanimit%20Rd%2C%20Muang%20Pattaya%2C%20Bang%20Lamung%20District%2C%20Chon%20Buri%2020150%2C%20Thailand"
     assert_true(
         '<iframe' in contact and map_embed in contact,
-        "Contact page is missing the precise embedded Google Map pin",
+        "Contact page is missing the requested embedded Google Map source",
         failures,
     )
     assert_true(
@@ -416,7 +416,7 @@ def check_hero_layout(pages: dict[str, str], failures: list[str]) -> None:
     assert_true(
         'class="aw-hero-image"' in home
         and (
-            'assets/images/Herosection4.png' in home
+            'assets/images/Herosection5.png' in home
             or 'assets/images/Hero_section_background.png' in home
             or 'assets/images/Herosection_cover.png' in home
         ),
@@ -543,7 +543,7 @@ def check_customer_photo_pagination(pages: dict[str, str], failures: list[str]) 
 def check_landing_page_revision(pages: dict[str, str], failures: list[str]) -> None:
     home = pages.get("index.html", "")
     styles = read_text(ROOT / "assets/css/styles.css")
-    map_embed = "https://www.google.com/maps?q=399%2F19%20Pornprapanimit%20Rd%2C%20Muang%20Pattaya%2C%20Bang%20Lamung%20District%2C%20Chon%20Buri%2020150%2C%20Thailand&output=embed"
+    map_embed = "https://www.google.com/maps?q=AW%20Business%20Services%20Pattaya&output=embed"
     map_search = "https://www.google.com/maps/search/?api=1&query=399%2F19%20Pornprapanimit%20Rd%2C%20Muang%20Pattaya%2C%20Bang%20Lamung%20District%2C%20Chon%20Buri%2020150%2C%20Thailand"
 
     assert_true(
@@ -553,7 +553,7 @@ def check_landing_page_revision(pages: dict[str, str], failures: list[str]) -> N
     )
     assert_true(
         map_embed in home and f'href="{map_search}"' in home,
-        "Landing page map section does not use the precise Google Maps pin",
+        "Landing page map section does not use the requested Google Maps embed source",
         failures,
     )
     assert_true(

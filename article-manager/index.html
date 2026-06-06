@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Article Manager | AW Business Service Pattaya</title>
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Internal article drafting tool for AW Business Service Pattaya. Create SEO article drafts, preview content, and copy a ready-to-paste HTML page shell.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;800;900&family=Prompt:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <style>
+    .manager-shell {
+      padding: 36px 0 56px;
+      background:
+        linear-gradient(180deg, rgba(248, 251, 253, 0.9) 0%, rgba(239, 247, 251, 0.95) 100%);
+    }
+
+    .manager-hero {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .manager-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(2rem, 3.4vw, 3rem);
+      line-height: 1.08;
+    }
+
+    .manager-hero p {
+      margin: 0;
+      max-width: 860px;
+      color: var(--ink-soft);
+      line-height: 1.75;
+    }
+
+    .manager-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .manager-panel,
+    .manager-preview,
+    .manager-output {
+      border: 1px solid rgba(198, 215, 223, 0.72);
+      border-radius: 24px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .manager-panel {
+      padding: 22px;
+    }
+
+    .manager-section {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 22px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .manager-section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .manager-section h2 {
+      margin: 0;
+      color: var(--primary-deep);
+      font-size: 1.12rem;
+      line-height: 1.2;
+    }
+
+    .manager-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field-full {
+      grid-column: 1 / -1;
+    }
+
+    .manager-label {
+      display: grid;
+      gap: 8px;
+      color: var(--ink-soft);
+      font-weight: 700;
+    }
+
+    .manager-input,
+    .manager-textarea,
+    .manager-select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f9fcff;
+      color: var(--ink);
+      padding: 13px 14px;
+      font: inherit;
+    }
+
+    .manager-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .manager-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .manager-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 0;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .manager-button.secondary {
+      background: #fff;
+      color: var(--primary);
+      border: 1px solid var(--line);
+    }
+
+    .manager-preview {
+      display: grid;
+      gap: 0;
+    }
+
+    .manager-preview-hero {
+      display: grid;
+      gap: 12px;
+      padding: 22px;
+      background:
+        linear-gradient(135deg, rgba(23, 142, 189, 0.08), rgba(124, 205, 235, 0.16)),
+        #fff;
+    }
+
+    .manager-preview-hero .eyebrow {
+      width: fit-content;
+    }
+
+    .manager-preview-hero h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.7rem, 2.3vw, 2.4rem);
+      line-height: 1.12;
+    }
+
+    .manager-preview-hero p {
+      margin: 0;
+      color: var(--ink-soft);
+      line-height: 1.72;
+    }
+
+    .manager-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .manager-status {
+      color: var(--primary-deep);
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .manager-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--primary-deep);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .manager-preview-image {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      background: #e7eff4;
+    }
+
+    .manager-preview-body {
+      display: grid;
+      gap: 18px;
+      padding: 22px;
+    }
+
+    .manager-preview-section {
+      display: grid;
+      gap: 10px;
+    }
+
+    .manager-preview-section h3 {
+      margin: 0;
+      color: var(--primary-deep);
+      font-size: 1.03rem;
+    }
+
+    .manager-preview-section p,
+    .manager-preview-section li {
+      margin: 0;
+      color: var(--ink-soft);
+      line-height: 1.75;
+    }
+
+    .manager-preview-section ul {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .manager-output {
+      margin-top: 22px;
+      padding: 18px;
+    }
+
+    .manager-output h2 {
+      margin: 0 0 12px;
+      color: var(--primary-deep);
+      font-size: 1.05rem;
+    }
+
+    .manager-output textarea {
+      width: 100%;
+      min-height: 280px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #f9fcff;
+      padding: 14px;
+      font: inherit;
+      color: var(--ink);
+      resize: vertical;
+    }
+
+    .manager-note {
+      margin-top: 10px;
+      color: var(--ink-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 980px) {
+      .manager-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .manager-shell {
+        padding: 24px 0 42px;
+      }
+
+      .manager-panel,
+      .manager-preview-hero,
+      .manager-preview-body,
+      .manager-output {
+        padding: 16px;
+      }
+
+      .manager-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .manager-actions {
+        flex-direction: column;
+      }
+
+      .manager-button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="manager-shell">
+    <div class="container">
+      <section class="manager-hero">
+        <span class="eyebrow">Internal tool</span>
+        <h1>Article Manager</h1>
+        <p>Draft new SEO articles for AW Business Service Pattaya, preview the layout, and copy a ready-to-paste HTML page shell. This is a local drafting helper, not a backend CMS.</p>
+      </section>
+
+      <section class="manager-grid">
+        <form class="manager-panel" id="articleForm">
+          <div class="manager-section">
+            <h2>Basic Details</h2>
+            <div class="manager-fields">
+              <label class="manager-label">Language
+                <select class="manager-select" id="lang">
+                  <option value="en">English</option>
+                  <option value="th">Thai</option>
+                </select>
+              </label>
+              <label class="manager-label">Category
+                <select class="manager-select" id="category">
+                  <option>Visa Services</option>
+                  <option>Work Permit</option>
+                  <option>Business Services</option>
+                  <option>Personal Services</option>
+                  <option>Legal Service</option>
+                  <option>Company</option>
+                </select>
+              </label>
+              <label class="manager-label field-full">Title
+                <input class="manager-input" id="title" value="How to Prepare a Visa Checklist">
+              </label>
+              <label class="manager-label">Slug
+                <input class="manager-input" id="slug" value="visa-checklist-pattaya">
+              </label>
+              <label class="manager-label">Publish Date
+                <input class="manager-input" id="date" type="date">
+              </label>
+              <label class="manager-label">Read Time
+                <input class="manager-input" id="readTime" value="4 min read">
+              </label>
+              <label class="manager-label field-full">Hero Image URL
+                <input class="manager-input" id="image" value="../assets/images/articles/visa-checklist.jpg">
+              </label>
+              <label class="manager-label field-full">Hero Image Alt
+                <input class="manager-input" id="imageAlt" value="Visa checklist support in Pattaya">
+              </label>
+              <label class="manager-label field-full">Short Excerpt
+                <textarea class="manager-textarea" id="excerpt">A practical article outline for clients who want a clean visa document checklist before filing.</textarea>
+              </label>
+            </div>
+          </div>
+
+          <div class="manager-section">
+            <h2>SEO</h2>
+            <div class="manager-fields">
+              <label class="manager-label field-full">SEO Title
+                <input class="manager-input" id="seoTitle" value="Visa Checklist Pattaya | AW Business Service">
+              </label>
+              <label class="manager-label field-full">SEO Description
+                <textarea class="manager-textarea" id="seoDescription">Learn how to prepare a visa checklist in Pattaya with practical document guidance, step-by-step structure, and local service support.</textarea>
+              </label>
+              <label class="manager-label field-full">Keywords
+                <textarea class="manager-textarea" id="keywords">visa services Pattaya, visa checklist Pattaya, document support Pattaya, work permit Pattaya</textarea>
+              </label>
+              <label class="manager-label field-full">Tags
+                <input class="manager-input" id="tags" value="Visa Services, Checklist, Document Support">
+              </label>
+            </div>
+          </div>
+
+          <div class="manager-section">
+            <h2>Content Blocks</h2>
+            <div class="manager-fields">
+              <label class="manager-label field-full">Intro
+                <textarea class="manager-textarea" id="intro">Start with a short introduction that explains the article in a direct and useful way.</textarea>
+              </label>
+              <label class="manager-label field-full">Section 1 Heading
+                <input class="manager-input" id="section1Title" value="Why the checklist matters">
+              </label>
+              <label class="manager-label field-full">Section 1 Body
+                <textarea class="manager-textarea" id="section1Body">Use this section to explain the problem, the process, or the key things readers need to know before they begin.</textarea>
+              </label>
+              <label class="manager-label field-full">Section 2 Heading
+                <input class="manager-input" id="section2Title" value="What to prepare">
+              </label>
+              <label class="manager-label field-full">Section 2 Body
+                <textarea class="manager-textarea" id="section2Body">Use this section for the key steps, checklist items, or practical advice.</textarea>
+              </label>
+              <label class="manager-label field-full">Section 3 Heading
+                <input class="manager-input" id="section3Title" value="When to contact us">
+              </label>
+              <label class="manager-label field-full">Section 3 Body
+                <textarea class="manager-textarea" id="section3Body">Use the final section to close with a clear call to action, support note, or next step.</textarea>
+              </label>
+            </div>
+            <div class="manager-actions">
+              <button class="manager-button" type="button" id="copyHtml">Copy HTML Shell</button>
+              <button class="manager-button secondary" type="button" id="copyJson">Copy Data Summary</button>
+              <a class="manager-button secondary" id="downloadHtml" href="#" download="article-draft.html">Download HTML</a>
+            </div>
+          </div>
+        </form>
+
+        <aside class="manager-preview" aria-label="Article preview">
+          <img class="manager-preview-image" id="previewImage" src="../assets/images/articles/visa-checklist.jpg" alt="Visa checklist support in Pattaya">
+          <div class="manager-preview-hero">
+            <span class="eyebrow" id="previewCategory">Visa Services</span>
+            <h2 id="previewTitle">How to Prepare a Visa Checklist</h2>
+            <p id="previewExcerpt">A practical article outline for clients who want a clean visa document checklist before filing.</p>
+            <div class="manager-meta">
+              <span class="manager-pill" id="previewDate">2026-06-06</span>
+              <span class="manager-pill" id="previewReadTime">4 min read</span>
+              <span class="manager-pill" id="previewSlug">visa-checklist-pattaya</span>
+            </div>
+            <div class="manager-status" id="previewStatus">Preview updates live as you edit.</div>
+          </div>
+          <div class="manager-preview-body">
+            <article class="manager-preview-section">
+              <h3 id="previewSection1Title">Why the checklist matters</h3>
+              <p id="previewSection1Body">Use this section to explain the problem, the process, or the key things readers need to know before they begin.</p>
+            </article>
+            <article class="manager-preview-section">
+              <h3 id="previewSection2Title">What to prepare</h3>
+              <p id="previewSection2Body">Use this section for the key steps, checklist items, or practical advice.</p>
+            </article>
+            <article class="manager-preview-section">
+              <h3 id="previewSection3Title">When to contact us</h3>
+              <p id="previewSection3Body">Use the final section to close with a clear call to action, support note, or next step.</p>
+            </article>
+            <article class="manager-preview-section">
+              <h3>Keywords</h3>
+              <p id="previewKeywords">visa services Pattaya, visa checklist Pattaya, document support Pattaya, work permit Pattaya</p>
+            </article>
+            <article class="manager-preview-section">
+              <h3>Tags</h3>
+              <div class="manager-meta" id="previewTags">
+                <span class="manager-pill">Visa Services</span>
+                <span class="manager-pill">Checklist</span>
+                <span class="manager-pill">Document Support</span>
+              </div>
+            </article>
+          </div>
+        </aside>
+      </section>
+
+      <section class="manager-output">
+        <h2>Generated HTML Shell</h2>
+        <textarea id="output" readonly></textarea>
+        <p class="manager-note">Copy this into a new article page and replace the placeholders with your final content.</p>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    let previewFrame = null;
+    const fields = [
+      "lang","category","title","slug","date","readTime","image","imageAlt","excerpt","seoTitle","seoDescription","keywords","tags",
+      "intro","section1Title","section1Body","section2Title","section2Body","section3Title","section3Body"
+    ];
+
+    function splitTags(value) {
+      return value.split(",").map((s) => s.trim()).filter(Boolean);
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function buildShell() {
+      const lang = $("lang").value;
+      const title = $("seoTitle").value.trim();
+      const description = $("seoDescription").value.trim();
+      const keywords = $("keywords").value.trim();
+      const slug = $("slug").value.trim();
+      const image = $("image").value.trim();
+      const imageAlt = $("imageAlt").value.trim();
+      const intro = $("intro").value.trim();
+      const section1Title = $("section1Title").value.trim();
+      const section1Body = $("section1Body").value.trim();
+      const section2Title = $("section2Title").value.trim();
+      const section2Body = $("section2Body").value.trim();
+      const section3Title = $("section3Title").value.trim();
+      const section3Body = $("section3Body").value.trim();
+
+      return [
+        "<!doctype html>",
+        `<html lang="${escapeHtml(lang)}">`,
+        "<head>",
+        '  <meta charset="utf-8">',
+        '  <meta name="viewport" content="width=device-width, initial-scale=1">',
+        `  <title>${escapeHtml(title)}</title>`,
+        `  <meta name="description" content="${escapeHtml(description)}">`,
+        `  <meta name="keywords" content="${escapeHtml(keywords)}">`,
+        '  <meta name="robots" content="index,follow">',
+        "</head>",
+        "<body>",
+        "  <main>",
+        `    <article data-slug="${escapeHtml(slug)}">`,
+        `      <img src="${escapeHtml(image)}" alt="${escapeHtml(imageAlt)}">`,
+        `      <h1>${escapeHtml($("title").value.trim())}</h1>`,
+        `      <p>${escapeHtml($("excerpt").value.trim())}</p>`,
+        `      <p>${escapeHtml(intro)}</p>`,
+        `      <h2>${escapeHtml(section1Title)}</h2>`,
+        `      <p>${escapeHtml(section1Body)}</p>`,
+        `      <h2>${escapeHtml(section2Title)}</h2>`,
+        `      <p>${escapeHtml(section2Body)}</p>`,
+        `      <h2>${escapeHtml(section3Title)}</h2>`,
+        `      <p>${escapeHtml(section3Body)}</p>`,
+        "    </article>",
+        "  </main>",
+        "</body>",
+        "</html>"
+      ].join("\n");
+    }
+
+    function renderPreview() {
+      $("previewTitle").textContent = $("title").value.trim();
+      $("previewCategory").textContent = $("category").value.trim();
+      $("previewExcerpt").textContent = $("excerpt").value.trim();
+      $("previewDate").textContent = $("date").value || new Date().toISOString().slice(0, 10);
+      $("previewReadTime").textContent = $("readTime").value.trim();
+      $("previewSlug").textContent = $("slug").value.trim();
+      $("previewImage").src = $("image").value.trim();
+      $("previewImage").alt = $("imageAlt").value.trim();
+      $("previewSection1Title").textContent = $("section1Title").value.trim();
+      $("previewSection1Body").textContent = $("section1Body").value.trim();
+      $("previewSection2Title").textContent = $("section2Title").value.trim();
+      $("previewSection2Body").textContent = $("section2Body").value.trim();
+      $("previewSection3Title").textContent = $("section3Title").value.trim();
+      $("previewSection3Body").textContent = $("section3Body").value.trim();
+      $("previewKeywords").textContent = $("keywords").value.trim();
+      $("previewTags").innerHTML = splitTags($("tags").value).map((tag) => `<span class="manager-pill">${tag}</span>`).join("");
+      const shell = buildShell();
+      $("output").value = shell;
+      $("downloadHtml").href = "data:text/html;charset=utf-8," + encodeURIComponent(shell);
+      $("previewStatus").textContent = "Preview updated at " + new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+
+    function updatePreview() {
+      if (previewFrame) {
+        return;
+      }
+
+      previewFrame = window.requestAnimationFrame(function () {
+        previewFrame = null;
+        renderPreview();
+      });
+    }
+
+    function syncDate() {
+      if (!$("date").value) {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const dd = String(today.getDate()).padStart(2, "0");
+        $("date").value = `${yyyy}-${mm}-${dd}`;
+      }
+    }
+
+    $("copyHtml").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText($("output").value);
+        $("copyHtml").textContent = "Copied HTML";
+      } catch (error) {
+        const output = $("output");
+        output.focus();
+        output.select();
+        try {
+          document.execCommand("copy");
+        } catch (copyError) {
+          console.warn("Clipboard copy failed", copyError);
+        }
+        $("copyHtml").textContent = "Copied HTML";
+      }
+      setTimeout(() => $("copyHtml").textContent = "Copy HTML Shell", 1200);
+    });
+
+    $("copyJson").addEventListener("click", async () => {
+      const data = {
+        lang: $("lang").value,
+        category: $("category").value,
+        title: $("title").value.trim(),
+        slug: $("slug").value.trim(),
+        seoTitle: $("seoTitle").value.trim(),
+        seoDescription: $("seoDescription").value.trim(),
+        keywords: $("keywords").value.trim(),
+        tags: splitTags($("tags").value),
+        image: $("image").value.trim(),
+        imageAlt: $("imageAlt").value.trim()
+      };
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+        $("copyJson").textContent = "Copied summary";
+      } catch (error) {
+        const text = JSON.stringify(data, null, 2);
+        const temp = document.createElement("textarea");
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        try {
+          document.execCommand("copy");
+        } catch (copyError) {
+          console.warn("Clipboard copy failed", copyError);
+        }
+        temp.remove();
+        $("copyJson").textContent = "Copied summary";
+      }
+      setTimeout(() => $("copyJson").textContent = "Copy Data Summary", 1200);
+    });
+
+    fields.forEach((id) => {
+      const el = $(id);
+      el.addEventListener("input", updatePreview);
+      el.addEventListener("change", updatePreview);
+    });
+    syncDate();
+    updatePreview();
+  </script>
+</body>
+</html>
