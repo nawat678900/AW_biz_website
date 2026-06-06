@@ -1,0 +1,45 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.venv/
+venv/
+env/
+
+# Backend runtime data
+backend/logs/
+backend/data/facebook_posts_store.json
+
+# Frontend / JS tooling
+node_modules/
+dist/
+build/
+coverage/
+
+# Local environment files
+.env
+.env.*
+
+# Misc
+*.log
