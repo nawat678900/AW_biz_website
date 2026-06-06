@@ -20,3 +20,4 @@
 /th/services/work-permit.html /th/work-permit/ 301
 /th/services/business-accounting.html /th/business-services/ 301
 /th/services/personal-support.html /th/personal-services/ 301
+/api/facebook-posts /.netlify/functions/facebook-posts 200

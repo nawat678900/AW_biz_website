@@ -330,7 +330,7 @@
 
     var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     var targets = Array.prototype.slice.call(document.querySelectorAll(
-      ".section-heading, .feature-card, .process-step, .testimonial, .customer-photo-card, .cta-panel, .map-panel"
+      ".section-heading, .feature-card, .process-step, .testimonial, .customer-photo-card, .cta-panel, .map-panel, .facebook-feed-card"
     ));
 
     if (!targets.length) {
@@ -878,6 +878,142 @@
     });
   }
 
+  function setupFacebookFeed() {
+    var section = document.querySelector("[data-facebook-feed]");
+    var list = document.querySelector("[data-facebook-feed-list]");
+
+    if (!section || !list) {
+      return;
+    }
+
+    var language = document.documentElement.lang === "th" ? "th" : "en";
+    var labels = {
+      en: {
+        meta: "Facebook update",
+        loading: "Loading latest Facebook posts",
+        empty: "Facebook updates will appear here once the feed is connected.",
+        error: "Facebook updates could not be loaded right now.",
+        fallback: "Read on Facebook"
+      },
+      th: {
+        meta: "อัปเดต Facebook",
+        loading: "กำลังโหลดโพสต์ล่าสุดจาก Facebook",
+        empty: "โพสต์จาก Facebook จะแสดงที่นี่เมื่อเชื่อมต่อฟีดเรียบร้อยแล้ว",
+        error: "ไม่สามารถโหลดโพสต์ Facebook ได้ในขณะนี้",
+        fallback: "อ่านบน Facebook"
+      }
+    };
+
+    var copy = labels[language] || labels.en;
+
+    function escapeAttr(value) {
+      return escapeHtml(String(value || ""));
+    }
+
+    function formatDate(value) {
+      if (!value) {
+        return "";
+      }
+
+      var date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return "";
+      }
+
+      try {
+        return new Intl.DateTimeFormat(language === "th" ? "th-TH" : "en-US", {
+          day: "numeric",
+          month: "short",
+          year: "numeric"
+        }).format(date);
+      } catch (error) {
+        return "";
+      }
+    }
+
+    function skeletonMarkup() {
+      return (
+        '<article class="facebook-feed-card is-skeleton" aria-hidden="true">' +
+          '<div class="facebook-feed-image facebook-feed-skeleton"></div>' +
+          '<div class="facebook-feed-body">' +
+            '<p class="facebook-feed-meta facebook-feed-skeleton-line"></p>' +
+            '<p class="facebook-feed-text facebook-feed-skeleton-line"></p>' +
+            '<p class="facebook-feed-text facebook-feed-skeleton-line short"></p>' +
+            '<span class="facebook-feed-link facebook-feed-skeleton-line tiny"></span>' +
+          "</div>" +
+        "</article>"
+      );
+    }
+
+    function emptyMarkup(message) {
+      return '<div class="facebook-feed-empty">' + escapeHtml(message) + "</div>";
+    }
+
+    function renderPosts(posts) {
+      list.setAttribute("aria-busy", "false");
+
+      if (!posts.length) {
+        list.innerHTML = emptyMarkup(copy.empty);
+        return;
+      }
+
+      list.innerHTML = posts
+        .map(function (post) {
+          var text = String(post && post.message ? post.message : "").trim();
+          var excerpt = text.length > 150 ? text.slice(0, 147).trim() + "..." : text;
+          var date = formatDate(post && post.createdTime ? post.createdTime : "");
+          var image = post && post.image ? String(post.image) : "";
+          var url = post && post.url ? String(post.url) : "https://www.facebook.com/awbizpattaya";
+
+          return (
+            '<article class="facebook-feed-card">' +
+              '<a class="facebook-feed-image' + (image ? "" : " is-empty") + '" href="' + escapeAttr(url) + '" target="_blank" rel="noopener">' +
+                (image
+                  ? '<img src="' + escapeAttr(image) + '" alt="" loading="lazy" decoding="async">'
+                  : '<span class="facebook-feed-image-fallback" aria-hidden="true"></span>') +
+              "</a>" +
+              '<div class="facebook-feed-body">' +
+                '<p class="facebook-feed-meta">' + escapeHtml(copy.meta) + (date ? ' <span aria-hidden="true">•</span> ' + escapeHtml(date) : "") + "</p>" +
+                '<p class="facebook-feed-text">' + escapeHtml(excerpt || copy.loading) + "</p>" +
+                '<a class="facebook-feed-link" href="' + escapeAttr(url) + '" target="_blank" rel="noopener">' + escapeHtml(copy.fallback) + "</a>" +
+              "</div>" +
+            "</article>"
+          );
+        })
+        .join("");
+    }
+
+    list.setAttribute("aria-busy", "true");
+    list.innerHTML = Array.from({ length: 6 }).map(skeletonMarkup).join("");
+
+    fetch("/api/facebook-posts", {
+      headers: {
+        accept: "application/json"
+      }
+    })
+      .then(function (response) {
+        return response.json().then(function (data) {
+          return {
+            ok: response.ok,
+            data: data || {}
+          };
+        });
+      })
+      .then(function (result) {
+        if (!result.ok) {
+          renderPosts([]);
+          return;
+        }
+
+        renderPosts(Array.isArray(result.data.posts) ? result.data.posts.slice(0, 6) : []);
+      })
+      .catch(function () {
+        list.setAttribute("aria-busy", "false");
+        list.innerHTML = emptyMarkup(copy.error);
+      });
+  }
+
   function escapeHtml(value) {
     return value
       .replace(/&/g, "&amp;")
@@ -893,6 +1029,7 @@
   setupContactForm();
   setupConsentBanner();
   setupHomepageMotion();
+  setupFacebookFeed();
   setupNewsPagination();
   setupArticlePagination();
   setupReviewPagination();

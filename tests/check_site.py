@@ -416,7 +416,7 @@ def check_hero_layout(pages: dict[str, str], failures: list[str]) -> None:
     assert_true(
         'class="aw-hero-image"' in home
         and (
-            'assets/images/Herosection5.png' in home
+            'assets/images/Herosection5.jpg' in home
             or 'assets/images/Hero_section_background.png' in home
             or 'assets/images/Herosection_cover.png' in home
         ),
