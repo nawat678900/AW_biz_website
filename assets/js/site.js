@@ -932,12 +932,37 @@
       }
     }
 
+    function buildHeadline(text) {
+      var value = String(text || "").trim();
+
+      if (!value) {
+        return copy.loading;
+      }
+
+      var firstLine = value.split(/\r?\n/)[0].trim();
+      var firstSentence = firstLine.split(/[.!?]/)[0].trim();
+      var headline = firstSentence || firstLine || value;
+
+      if (headline.length > 72) {
+        return headline.slice(0, 69).trim() + "...";
+      }
+
+      return headline;
+    }
+
     function skeletonMarkup() {
       return (
-        '<article class="facebook-feed-card is-skeleton" aria-hidden="true">' +
-          '<div class="facebook-feed-image facebook-feed-skeleton"></div>' +
-          '<div class="facebook-feed-body">' +
+        '<article class="aw-news-card facebook-feed-card is-skeleton" aria-hidden="true">' +
+          '<div class="aw-news-media facebook-feed-media">' +
+            '<div class="facebook-feed-skeleton facebook-feed-image"></div>' +
+            '<div class="aw-news-tag-row facebook-feed-tag-row">' +
+              '<span class="aw-news-tag facebook-feed-skeleton-chip"></span>' +
+              '<span class="aw-news-tag facebook-feed-skeleton-chip short"></span>' +
+            "</div>" +
+          "</div>" +
+          '<div class="aw-news-body facebook-feed-body">' +
             '<p class="facebook-feed-meta facebook-feed-skeleton-line"></p>' +
+            '<h3 class="facebook-feed-title facebook-feed-skeleton-line"></h3>' +
             '<p class="facebook-feed-text facebook-feed-skeleton-line"></p>' +
             '<p class="facebook-feed-text facebook-feed-skeleton-line short"></p>' +
             '<span class="facebook-feed-link facebook-feed-skeleton-line tiny"></span>' +
@@ -961,20 +986,28 @@
       list.innerHTML = posts
         .map(function (post) {
           var text = String(post && post.message ? post.message : "").trim();
+          var title = buildHeadline(text);
           var excerpt = text.length > 150 ? text.slice(0, 147).trim() + "..." : text;
           var date = formatDate(post && post.createdTime ? post.createdTime : "");
           var image = post && post.image ? String(post.image) : "";
           var url = post && post.url ? String(post.url) : "https://www.facebook.com/awbizpattaya";
 
           return (
-            '<article class="facebook-feed-card">' +
-              '<a class="facebook-feed-image' + (image ? "" : " is-empty") + '" href="' + escapeAttr(url) + '" target="_blank" rel="noopener">' +
-                (image
-                  ? '<img src="' + escapeAttr(image) + '" alt="" loading="lazy" decoding="async">'
-                  : '<span class="facebook-feed-image-fallback" aria-hidden="true"></span>') +
-              "</a>" +
-              '<div class="facebook-feed-body">' +
+            '<article class="aw-news-card facebook-feed-card">' +
+              '<div class="aw-news-media facebook-feed-media">' +
+                '<a class="facebook-feed-image' + (image ? "" : " is-empty") + '" href="' + escapeAttr(url) + '" target="_blank" rel="noopener">' +
+                  (image
+                    ? '<img src="' + escapeAttr(image) + '" alt="" loading="lazy" decoding="async">'
+                    : '<span class="facebook-feed-image-fallback" aria-hidden="true"></span>') +
+                "</a>" +
+                '<div class="aw-news-tag-row facebook-feed-tag-row">' +
+                  '<span class="aw-news-tag">Facebook</span>' +
+                  '<span class="aw-news-tag">' + escapeHtml(language === "th" ? "อัปเดต" : "Update") + "</span>" +
+                "</div>" +
+              "</div>" +
+              '<div class="aw-news-body facebook-feed-body">' +
                 '<p class="facebook-feed-meta">' + escapeHtml(copy.meta) + (date ? ' <span aria-hidden="true">•</span> ' + escapeHtml(date) : "") + "</p>" +
+                '<h3 class="facebook-feed-title">' + escapeHtml(title) + "</h3>" +
                 '<p class="facebook-feed-text">' + escapeHtml(excerpt || copy.loading) + "</p>" +
                 '<a class="facebook-feed-link" href="' + escapeAttr(url) + '" target="_blank" rel="noopener">' + escapeHtml(copy.fallback) + "</a>" +
               "</div>" +
