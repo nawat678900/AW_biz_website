@@ -262,6 +262,7 @@ def check_contact_flow(pages: dict[str, str], failures: list[str]) -> None:
 
 def check_facebook_feed(pages: dict[str, str], failures: list[str]) -> None:
     script = read_text(ROOT / "assets/js/site.js")
+    styles = read_text(ROOT / "assets/css/styles.css")
     for route, html in [
         ("index.html", pages.get("index.html", "")),
         ("th/index.html", read_text(ROOT / "th/index.html")),
@@ -291,6 +292,15 @@ def check_facebook_feed(pages: dict[str, str], failures: list[str]) -> None:
         "Site script does not initialize Facebook article-style cards",
         failures,
     )
+    for token in [
+        ".facebook-feed-title",
+        "-webkit-line-clamp: 2",
+        ".facebook-feed-text",
+        "-webkit-line-clamp: 3",
+        ".facebook-feed-body",
+        "grid-template-rows",
+    ]:
+        assert_true(token in styles, f"Stylesheet missing Facebook card consistency token: {token}", failures)
 
 
 def check_contact_widget(pages: dict[str, str], failures: list[str]) -> None:
