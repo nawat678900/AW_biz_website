@@ -1,6 +1,6 @@
 (function () {
   var TRACKING_CONFIG = {
-    ga4Id: "",
+    ga4Id: "G-ZL884FKKHH",
     metaPixelId: ""
   };
 
@@ -881,6 +881,7 @@
   function setupFacebookFeed() {
     var section = document.querySelector("[data-facebook-feed]");
     var list = document.querySelector("[data-facebook-feed-list]");
+    var pageUrl = "https://www.facebook.com/profile.php?id=61570829170335";
 
     if (!section || !list) {
       return;
@@ -990,7 +991,7 @@
           var excerpt = text.length > 150 ? text.slice(0, 147).trim() + "..." : text;
           var date = formatDate(post && post.createdTime ? post.createdTime : "");
           var image = post && post.image ? String(post.image) : "";
-          var url = post && post.url ? String(post.url) : "https://www.facebook.com/awbizpattaya";
+          var url = pageUrl;
 
           return (
             '<article class="aw-news-card facebook-feed-card" data-facebook-card>' +

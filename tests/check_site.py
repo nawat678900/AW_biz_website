@@ -361,6 +361,31 @@ def check_contact_widget(pages: dict[str, str], failures: list[str]) -> None:
             )
 
 
+def check_ga4_configuration(failures: list[str]) -> None:
+    script = read_text(ROOT / "assets/js/site.js")
+    assert_true(
+        'ga4Id: "G-ZL884FKKHH"' in script,
+        "Site script is not configured with the requested GA4 Measurement ID",
+        failures,
+    )
+
+
+def check_search_console_verification(failures: list[str]) -> None:
+    verification_file = ROOT / "google1aa40e3310aec58e.html"
+    expected = "google-site-verification: google1aa40e3310aec58e.html"
+    assert_true(
+        verification_file.exists(),
+        "Missing Google Search Console verification file",
+        failures,
+    )
+    if verification_file.exists():
+        assert_true(
+            read_text(verification_file).strip() == expected,
+            "Google Search Console verification file has unexpected content",
+            failures,
+        )
+
+
 def check_local_links(pages: dict[str, str], failures: list[str]) -> None:
     href_pattern = re.compile(r'href="([^"]+)"')
     for route, html in pages.items():
@@ -621,6 +646,8 @@ def main() -> int:
     check_navigation(pages, failures)
     check_contact_flow(pages, failures)
     check_contact_widget(pages, failures)
+    check_ga4_configuration(failures)
+    check_search_console_verification(failures)
     check_local_links(pages, failures)
     check_local_images(pages, failures)
     check_icon_mappings(pages, failures)
