@@ -239,7 +239,7 @@ def check_contact_flow(pages: dict[str, str], failures: list[str]) -> None:
     all_html = "\n".join(pages.values())
     assert_true(line_url in all_html, "LINE contact URL is missing", failures)
     assert_true("@awbizpattaya" in all_html, "LINE handle is missing", failures)
-    assert_true("tel:+66851247315" in all_html, "Phone CTA is missing", failures)
+    assert_true("tel:+66863220030" in all_html, "Phone CTA is missing", failures)
 
     contact = pages.get("contact/index.html", "")
     for field in ["name", "contact", "service", "message"]:
@@ -305,7 +305,7 @@ def check_facebook_feed(pages: dict[str, str], failures: list[str]) -> None:
 
 def check_contact_widget(pages: dict[str, str], failures: list[str]) -> None:
     widget_links = [
-        'href="tel:+66851247315"',
+        'href="tel:+66863220030"',
         'href="https://www.facebook.com/profile.php?id=61570829170335"',
         'href="https://line.me/R/ti/p/@awbizpattaya"',
         'href="mailto:info@awbizpattaya.com"',
