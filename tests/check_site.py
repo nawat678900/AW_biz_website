@@ -70,6 +70,10 @@ ROUTES = {
     "90-Day Report Pattaya": "personal-services/90-day-report-pattaya/index.html",
     "Visa Cancellation": "personal-services/visa-cancellation/index.html",
     "Work Permit Cancellation": "personal-services/work-permit-cancellation/index.html",
+    "Marriage Registration for Foreigners": "personal-services/marriage-registration-foreigners/index.html",
+    "Document Translation and Thai Embassy Certification": "personal-services/translation-english-thai-embassy/index.html",
+    "TH Marriage Registration for Foreigners": "th/personal-services/marriage-registration-foreigners/index.html",
+    "TH Document Translation and Thai Embassy Certification": "th/personal-services/translation-english-thai-embassy/index.html",
 }
 
 LOCAL_ASSETS = [
