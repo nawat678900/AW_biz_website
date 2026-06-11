@@ -33,6 +33,7 @@
     "LI": "message-circle",
     "LN": "message-circle",
     "MA": "users",
+    "MR": "heart-handshake",
     "NB": "passport",
     "NW": "briefcase",
     "OF": "map-pin",
