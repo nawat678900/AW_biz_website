@@ -36,6 +36,7 @@ ROUTES = {
     "Terms": "terms/index.html",
     "PDPA Notice": "pdpa-notice/index.html",
     "Visa Services": "visa-services/index.html",
+    "TH Visa Services": "th/visa-services/index.html",
     "Business Visa Pattaya": "visa-services/business-visa-pattaya/index.html",
     "Retirement Visa Pattaya": "visa-services/retirement-visa-pattaya/index.html",
     "Marriage Visa Pattaya": "visa-services/marriage-visa-pattaya/index.html",
@@ -44,6 +45,10 @@ ROUTES = {
     "Visa Document Preparation": "visa-services/visa-document-preparation/index.html",
     "BOI Visa Support": "visa-services/boi-visa-support/index.html",
     "Schengen Visa Support": "visa-services/schengen-visa-support/index.html",
+    "DTV Visa Support": "visa-services/dtv-visa-support/index.html",
+    "LTR Visa Support": "visa-services/ltr-visa-support/index.html",
+    "TH DTV Visa Support": "th/visa-services/dtv-visa-support/index.html",
+    "TH LTR Visa Support": "th/visa-services/ltr-visa-support/index.html",
     "Work Permit": "work-permit/index.html",
     "Work Permit Application Pattaya": "work-permit/application-pattaya/index.html",
     "Work Permit Renewal Pattaya": "work-permit/renewal-pattaya/index.html",
@@ -170,15 +175,27 @@ def check_navigation(pages: dict[str, str], failures: list[str]) -> None:
         "contact/",
     ]
 
-    required_top_level = [
-        "Home",
-        "Services",
-        "Article",
-        "Company",
-        "Contact",
-    ]
-
     for route, html in pages.items():
+        is_thai = route.startswith("th/")
+        if is_thai:
+            required_top_level = [
+                "หน้าหลัก",
+                "บริการ",
+                "บทความ",
+                "บริษัท",
+                "ติดต่อ",
+            ]
+            menu_label = 'aria-label="สลับเมนูการนำทาง"'
+        else:
+            required_top_level = [
+                "Home",
+                "Services",
+                "Article",
+                "Company",
+                "Contact",
+            ]
+            menu_label = 'aria-label="Toggle navigation menu"'
+
         header_start = html.find('<header class="site-header">')
         header_end = html.find("</header>", header_start)
         header = html[header_start:header_end] if header_start != -1 and header_end != -1 else html
@@ -204,7 +221,7 @@ def check_navigation(pages: dict[str, str], failures: list[str]) -> None:
             failures,
         )
         assert_true(
-            'aria-label="Toggle navigation menu"' in header,
+            menu_label in header,
             f"{route} is missing an accessible mobile menu button",
             failures,
         )
@@ -494,6 +511,26 @@ def check_hero_layout(pages: dict[str, str], failures: list[str]) -> None:
     ]:
         assert_true(token in styles, f"Stylesheet missing requested hero CSS: {token}", failures)
 
+
+def check_visa_service_landing_pages(pages: dict[str, str], failures: list[str]) -> None:
+    for route, expected_links in [
+        (
+            "visa-services/index.html",
+            ["dtv-visa-support/", "ltr-visa-support/"],
+        ),
+        (
+            "th/visa-services/index.html",
+            ["dtv-visa-support/", "ltr-visa-support/"],
+        ),
+    ]:
+        html = pages.get(route, "")
+        for link in expected_links:
+            assert_true(
+                link in html,
+                f"{route} is missing visa service landing link: {link}",
+                failures,
+            )
+
 def check_review_pagination(pages: dict[str, str], failures: list[str]) -> None:
     home = pages.get("index.html", "")
     script = read_text(ROOT / "assets/js/site.js")
@@ -652,6 +689,7 @@ def main() -> int:
     check_local_images(pages, failures)
     check_icon_mappings(pages, failures)
     check_hero_layout(pages, failures)
+    check_visa_service_landing_pages(pages, failures)
     check_review_pagination(pages, failures)
     check_customer_photo_pagination(pages, failures)
     check_facebook_feed(pages, failures)
